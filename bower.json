@@ -1,0 +1,23 @@
+{
+  "name": "bless",
+  "description": "Bless band website",
+  "main": "index.html",
+  "license": "ISC",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "fullpage.js": "fullpage#^2.9.2",
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "jquery-easing": "*",
+    "animate.css": "^3.5.2",
+    "jquery": "^3.1.1"
+  }
+}
