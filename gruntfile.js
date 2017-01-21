@@ -100,14 +100,16 @@ module.exports = function(grunt) {
        }
     },
 
-
     sass: {
-      dist: {
-        files: {
-         '<%= source %>/css/main.css' : '<%= source %>/sass/main.css'
+        dist: {
+            options: {
+                style: 'nested' //no need for config.rb
+            },
+            files: {
+                '<%= source %>/css/main.css': '<%= source %>/sass/main.scss'
+            }
         }
-      }
-  },
+    }, //end of sass
 
     cssmin : {
        combine: {
@@ -157,42 +159,30 @@ module.exports = function(grunt) {
 
   
 
-  watch: {
-  scripts: {
-    files: ['<%= source %>/js/*.js'],
-    tasks: ['uglify'],
-    options: {
-      spawn: false,
+watch: {
+    scripts: {
+      files: ['<%= source %>/js/*.js'],
+      tasks: ['uglify'],
+      options: {
+        spawn: false,
+      }
+    },
+
+    css: {
+      files: ['<%= source %>/css/*.css'],
+      tasks: ['cssmin'],
+      options: {
+        spawn: false,
+      },
+    },
+    html: {
+      files: ['<%= source %>/index.html'],
+      tasks: ['htmlmin'],
+      options: {
+        spawn: false,
+      },
     }
-  },
-  sass: {
-     files: ['<%= source %>/sass/*.scss'],
-    tasks: ['sass'],
-    options: {
-      spawn: false,
-    },
-  }
-  css: {
-    files: ['<%= source %>/css/*.css'],
-    tasks: ['cssmin'],
-    options: {
-      spawn: false,
-    },
-  },
-  html: {
-    files: ['<%= source %>/index.html'],
-    tasks: ['htmlmin'],
-    options: {
-      spawn: false,
-    },
-  },
- /* grunt: {
-        files: ['gruntfile.js']
-    }*/
-},
-
-
-
+}
 
 
   });
@@ -206,9 +196,10 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
 
 
-
+  grunt.registerTask('test-sass', ['sass']);
+  grunt.registerTask('default', [ 'uglify:build', 'htmlmin', 'cssmin']);
   grunt.registerTask('update-assets', ['copy']);
   grunt.registerTask('update-img', ['imagemin']);
-  grunt.registerTask('default', ['uglify:build','cssmin:combine', 'purifycss', 'htmlmin', 'cssmin']);
 
-};
+
+}
