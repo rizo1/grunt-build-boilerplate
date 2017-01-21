@@ -111,6 +111,22 @@ module.exports = function(grunt) {
         }
     }, //end of sass
 
+    browserSync: {
+        dev: {
+            bsFiles: {
+                src: ['<%= dev %>/**', '<%= source %>/!.sass-cache']
+            },
+            options: {
+                server: {
+                    baseDir: "<%= dev %>/"
+                },
+                ghostMode: false,
+                open: false,
+                watchTask: true
+            }
+        }
+    },
+
     cssmin : {
        combine: {
           options: {
@@ -131,10 +147,13 @@ module.exports = function(grunt) {
    },
 
    htmlmin: { 
+
       build: {
         options: {                                 
-        removeComments: true,
-        collapseWhitespace: true
+          removeComments: true,
+          collapseWhitespace: true,
+          minifyJS: true,
+          minifyCSS: true
         },
         files: [{                                  
           '<%= dev %>/index.html':'<%= source %>/index.html'
@@ -168,6 +187,15 @@ watch: {
       }
     },
 
+   /* sass: {
+      files: ['<%= source %>/sass/main.scss'],
+      tasks: ['sass'],
+      options: {
+        spawn: false,
+      },
+    },*/
+
+
     css: {
       files: ['<%= source %>/css/*.css'],
       tasks: ['cssmin'],
@@ -194,12 +222,15 @@ watch: {
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-browser-sync');
+
+  //set up npm-critical - for above the fold content
 
 
-  grunt.registerTask('test-sass', ['sass']);
-  grunt.registerTask('default', [ 'uglify:build', 'htmlmin', 'cssmin']);
-  grunt.registerTask('update-assets', ['copy']);
-  grunt.registerTask('update-img', ['imagemin']);
+
+  // default for development: type grunt
+  grunt.registerTask('default', ['browserSync', 'watch']);
+
 
 
 }
