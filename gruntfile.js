@@ -187,13 +187,13 @@ watch: {
       }
     },
 
-   /* sass: {
-      files: ['<%= source %>/sass/main.scss'],
+    sass: {
+      files: ['<%= source %>/sass/*.scss'],
       tasks: ['sass'],
       options: {
         spawn: false,
       },
-    },*/
+    },
 
 
     css: {
