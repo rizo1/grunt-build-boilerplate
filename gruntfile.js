@@ -187,18 +187,9 @@ watch: {
       }
     },
 
-    sass: {
-      files: ['<%= source %>/sass/*.scss'],
-      tasks: ['sass'],
-      options: {
-        spawn: false,
-      },
-    },
-
-
     css: {
-      files: ['<%= source %>/css/*.css'],
-      tasks: ['cssmin'],
+      files: ['<%= source %>/sass/*.scss'],
+      tasks: ['sass','cssmin'],
       options: {
         spawn: false,
       },
@@ -230,6 +221,9 @@ watch: {
 
   // default for development: type grunt
   grunt.registerTask('default', ['browserSync', 'watch']);
+
+  //pull in bower dependencies (for use after "bower update")
+  grunt.registerTask('update-bower', ['copy']);
 
 
 
