@@ -2,7 +2,32 @@ article {
   height: 100vh; }
 
 h1 {
-  color: orange;
-  font-weight: 600; }
+  color: blue;
+  font-weight: 700;
+  font-style: italic; }
+
+article {
+  height: 100vh; }
+
+.grid-container {
+  font-size: 0;
+  width: 100%; }
+  .grid-container > div {
+    font-size: 16px;
+    display: inline-block;
+    vertical-align: top;
+    width: 50%; }
+
+.left-box {
+  background-color: blue; }
+
+.right-box {
+  background-color: green; }
+
+.next-page h2 {
+  color: pink; }
+.next-page p {
+  font-weight: bold;
+  color: purple; }
 
 /*# sourceMappingURL=main.css.map */

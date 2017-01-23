@@ -138,6 +138,22 @@ module.exports = function(grunt) {
       }    
     },
 
+   critical: {
+    test: {
+        options: {
+            base: './',
+            css: [
+                '<%= dev %>/css/main.min.css',
+                
+            ],
+            width: 320,
+            height: 70
+        },
+        src: '<%= dev %>/*.html',
+        dest: '<%= dev %>/test/index-critical.html'
+    }
+},
+
     uglify: {
       build: {
           files: {
@@ -189,7 +205,7 @@ watch: {
 
     css: {
       files: ['<%= source %>/sass/*.scss'],
-      tasks: ['sass','cssmin'],
+      tasks: ['sass','cssmin', 'critical_css'],
       options: {
         spawn: false,
       },
@@ -213,6 +229,7 @@ watch: {
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
   grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-critical');
   grunt.loadNpmTasks('grunt-browser-sync');
 
   //set up npm-critical - for above the fold content
@@ -220,7 +237,11 @@ watch: {
 
 
   // default for development: type grunt
-  grunt.registerTask('default', ['browserSync', 'watch']);
+  grunt.registerTask('default', ['browserSync', 'critical_css', 'watch']);
+
+  //critical test
+   grunt.registerTask('critical-test', ['critical']);
+
 
   //pull in bower dependencies (for use after "bower update")
   grunt.registerTask('update-bower', ['copy']);
