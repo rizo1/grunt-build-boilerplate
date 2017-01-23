@@ -146,11 +146,16 @@ module.exports = function(grunt) {
                 '<%= dev %>/css/main.min.css',
                 
             ],
-            width: 320,
-            height: 70
+            width: 1200,
+            height: 900,
+            minify: true
         },
-        src: '<%= dev %>/*.html',
-        dest: '<%= dev %>/test/index-critical.html'
+          files: [{
+          expand: true,                  
+          cwd: '<%= source %>/',                    
+          src: ['*.html'],   
+          dest: '<%= dev %>/html/'                  
+        }]
     }
 },
 
@@ -169,11 +174,19 @@ module.exports = function(grunt) {
           removeComments: true,
           collapseWhitespace: true,
           minifyJS: true,
-          minifyCSS: true
+          /*minifyCSS: true*/  //critical already minifying
         },
-        files: [{                                  
-          '<%= dev %>/index.html':'<%= source %>/index.html'
-        }]
+       /* files: [{                                  
+          '<%= dev %>/html/index.html':'<%= source %>/index.html'
+        }]*/
+        files: [{
+            expand: true, 
+            cwd: '<%= dev %>/html/', 
+            src: ['*.html'], 
+            dest: '<%= dev %>/', 
+            ext: '.html',
+            extDot: 'first' 
+          }]
       }                                                                       
   },
 
@@ -205,18 +218,21 @@ watch: {
 
     css: {
       files: ['<%= source %>/sass/*.scss'],
-      tasks: ['sass','cssmin', 'critical_css'],
+      tasks: ['sass','cssmin'],
       options: {
         spawn: false,
       },
     },
+
     html: {
-      files: ['<%= source %>/index.html'],
-      tasks: ['htmlmin'],
+      files: ['<%= source %>/*.html'],
+      tasks: ['critical','htmlmin'],
       options: {
         spawn: false,
       },
-    }
+    },
+
+   
 }
 
 
@@ -237,11 +253,13 @@ watch: {
 
 
   // default for development: type grunt
-  grunt.registerTask('default', ['browserSync', 'critical_css', 'watch']);
+  grunt.registerTask('default', ['browserSync', 'watch']);
 
   //critical test
    grunt.registerTask('critical-test', ['critical']);
 
+  //htmlmin test
+   grunt.registerTask('htmlmin-test', ['htmlmin']);
 
   //pull in bower dependencies (for use after "bower update")
   grunt.registerTask('update-bower', ['copy']);
