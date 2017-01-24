@@ -94,10 +94,23 @@ module.exports = function(grunt) {
          dest: '<%= source %>/css/' 
         },
 
+      
 
         ]
       
-       }
+       },
+
+    fonts: {
+      files: [{
+          nonull: true,
+          expand: true,
+          flatten: true,
+          filter: 'isFile',
+         cwd: '<%= source %>/fonts/',  
+         src: '*.{eot,svg,ttf,woff,woff2,otf}',
+         dest: '<%= dev %>/fonts/' 
+       }]
+      }
     },
 
     sass: {
@@ -193,7 +206,7 @@ module.exports = function(grunt) {
   imagemin: {                          
     dynamic: {
        options: {                       
-        optimizationLevel: 5,
+        optimizationLevel: 7,
       },                         
       files: [{
         expand: true,                  
@@ -247,13 +260,14 @@ watch: {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-critical');
   grunt.loadNpmTasks('grunt-browser-sync');
+  grunt.loadNpmTasks('grunt-newer');
 
   //set up npm-critical - for above the fold content
 
 
 
   // default for development: type grunt
-  grunt.registerTask('default', ['browserSync', 'watch']);
+  grunt.registerTask('default', ['browserSync', 'newer:imagemin', 'watch']);
 
   //critical test
    grunt.registerTask('critical-test', ['critical']);
@@ -261,8 +275,17 @@ watch: {
   //htmlmin test
    grunt.registerTask('htmlmin-test', ['htmlmin']);
 
+  //Update images
+  grunt.registerTask('newer-test', ['newer:imagemin']);
+
+  //update fonts
+  grunt.registerTask('font-update', ['copy:fonts']);
+
   //pull in bower dependencies (for use after "bower update")
-  grunt.registerTask('update-bower', ['copy']);
+  grunt.registerTask('update-bower', ['copy:bower']);
+
+
+
 
 
 
