@@ -107,7 +107,7 @@ module.exports = function(grunt) {
           flatten: true,
           filter: 'isFile',
          cwd: '<%= source %>/fonts/',  
-         src: '*.{eot,svg,ttf,woff,woff2,otf}',
+         src: '**',
          dest: '<%= dev %>/fonts/' 
        }]
       }
@@ -211,7 +211,7 @@ module.exports = function(grunt) {
       files: [{
         expand: true,                  
         cwd: '<%= source %>/img/',                    
-        src: ['*.{png,jpg,gif}'],   
+        src: ['**'],   
         dest: '<%= dev %>/img/'                  
       }]
     }
@@ -276,7 +276,7 @@ watch: {
    grunt.registerTask('htmlmin-test', ['htmlmin']);
 
   //Update images
-  grunt.registerTask('newer-test', ['newer:imagemin']);
+  grunt.registerTask('image-update', ['newer:imagemin']);
 
   //update fonts
   grunt.registerTask('font-update', ['copy:fonts']);
