@@ -1,0 +1,47 @@
+article{
+	height:100vh;
+}
+
+h1{
+	color:blue;
+	font-weight: 700;
+	font-style:italic;
+}
+
+article{
+	height:100vh;
+}
+
+$base-font: 16px;
+
+.grid-container{
+	font-size:0;
+	width:100%;
+
+	> div{
+		font-size: $base-font;
+		display:inline-block;
+		vertical-align: top;
+		width:50%;
+	}
+
+}
+
+.left-box{
+	background-color: blue;
+}
+
+.right-box{
+	background-color: green;
+}
+
+.next-page{
+	h2{
+		color:pink;
+	}
+
+	p{
+		font-weight:bold;
+		color:purple;
+	}
+}
