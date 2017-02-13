@@ -1,21 +1,19 @@
-/*var mozjpeg = require('imagemin-mozjpeg');*/
-
 module.exports = function(grunt) {
 
+  source = '_src';
+  dev = '_dev';
+
+  // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    source: '_src',
-    dev: '_dev',
-
-
-    copy: { //migrating assets from bower to src
+     copy: { //migrating assets from bower to src
   
       bower:{
         
         files: [
 
-       {
+     /*  {
           nonull: true,
           expand: true,
           flatten: true,
@@ -24,9 +22,9 @@ module.exports = function(grunt) {
           src: 'jquery.easing.js', 
           dest: '<%= source %>/js/', 
         },
-        
+        */
 
-        {
+/*        {
           nonull: true,
           expand: true,
           flatten: true,
@@ -34,9 +32,9 @@ module.exports = function(grunt) {
           cwd: 'bower_components/fullpage.js/dist/',
           src: 'jquery.fullpage.js', 
           dest: '<%= source %>/js/', 
-        },
+        },*/
 
-        {
+     /*   {
           nonull: true,
           expand: true,
           flatten: true,
@@ -44,7 +42,7 @@ module.exports = function(grunt) {
           cwd: 'bower_components/bootstrap/dist/js',
           src: 'bootstrap.js', 
           dest: '<%= source %>/js/', 
-        },
+        },*/
 
          {
           nonull: true,
@@ -56,7 +54,7 @@ module.exports = function(grunt) {
           dest: '<%= source %>/js/', 
         },
         
-        {
+     /*   {
           nonull: true,
           expand: true,
           flatten: true,
@@ -64,7 +62,7 @@ module.exports = function(grunt) {
          cwd: 'bower_components/bootstrap/dist/css/', 
          src: 'bootstrap.css',
          dest: '<%= source %>/css/' 
-        },
+        },*/
         {
           nonull: true,
           expand: true,
@@ -74,7 +72,17 @@ module.exports = function(grunt) {
          src: 'font-awesome.css',
          dest: '<%= source %>/css/' 
         },
-           {
+
+         {
+          nonull: true,
+          expand: true,
+          flatten: true,
+          filter: 'isFile',
+         cwd: 'bower_components/font-awesome/fonts/', 
+         src: '**',
+         dest: '<%= source %>/fonts/' 
+        },
+     /*      {
           nonull: true,
           expand: true,
           flatten: true,
@@ -82,9 +90,9 @@ module.exports = function(grunt) {
          cwd: 'bower_components/fullpage.js/dist/', 
          src: 'jquery.fullpage.css',
          dest: '<%= source %>/css/' 
-        },
+        },*/
 
-        {
+      /*  {
           nonull: true,
           expand: true,
           flatten: true,
@@ -92,15 +100,12 @@ module.exports = function(grunt) {
          cwd: 'bower_components/animate.css/', 
          src: 'animate.css',
          dest: '<%= source %>/css/' 
-        },
+        },*/
 
+        
       
-
-        ]
-      
-       },
-
-    fonts: {
+       ]},
+     fonts: {
       files: [{
           nonull: true,
           expand: true,
@@ -111,7 +116,9 @@ module.exports = function(grunt) {
          dest: '<%= dev %>/fonts/' 
        }]
       }
+
     },
+   
 
     sass: {
         dist: {
@@ -119,26 +126,10 @@ module.exports = function(grunt) {
                 style: 'nested' //no need for config.rb
             },
             files: {
-                '<%= source %>/css/main.css': '<%= source %>/sass/main.scss'
+                '<%= source %>/css/main.css': '<%= source %>/scss/main.scss'
             }
         }
-    }, //end of sass
-
-    browserSync: {
-        dev: {
-            bsFiles: {
-                src: ['<%= dev %>/**', '<%= source %>/!.sass-cache']
-            },
-            options: {
-                server: {
-                    baseDir: "<%= dev %>/"
-                },
-                ghostMode: false,
-                open: false,
-                watchTask: true
-            }
-        }
-    },
+    }, 
 
     cssmin : {
        combine: {
@@ -151,7 +142,58 @@ module.exports = function(grunt) {
       }    
     },
 
-   critical: {
+     uglify: {
+      build: {
+          files: {
+              '<%= dev %>/js/main.min.js': ['<%= source %>/js/jquery.js', '<%= source %>/js/*.js'],
+          }
+      }
+   },
+
+    htmlmin: { 
+
+      indexBuild: {
+        options: {                                 
+          removeComments: true,
+          collapseWhitespace: true,
+          minifyJS: true,
+          /*minifyCSS: true*/  //critical already minifying
+        },
+       /* files: [{                                  
+          '<%= dev %>/html/index.html':'<%= source %>/index.html'
+        }]*/
+        files: [{
+            expand: true, 
+            cwd: '<%= dev %>/html/', 
+            src: 'index.html', 
+            dest: '<%= dev %>/', 
+            ext: '.html',
+            extDot: 'first' 
+          }]
+      },
+      otherBuild: {
+        options: {                                 
+          removeComments: true,
+          collapseWhitespace: true,
+          minifyJS: true,
+          /*minifyCSS: true*/  //critical already minifying
+        },
+       /* files: [{                                  
+          '<%= dev %>/html/index.html':'<%= source %>/index.html'
+        }]*/
+        files: [{
+            expand: true, 
+            cwd: '<%= source %>/', 
+            src: ['*.html', '!index.html'], 
+            dest: '<%= dev %>/', 
+            ext: '.html',
+            extDot: 'first' 
+          }]
+      },
+
+  },
+
+  critical: {
     test: {
         options: {
             base: './',
@@ -166,41 +208,10 @@ module.exports = function(grunt) {
           files: [{
           expand: true,                  
           cwd: '<%= source %>/',                    
-          src: ['*.html'],   
+          src: 'index.html',   
           dest: '<%= dev %>/html/'                  
         }]
     }
-},
-
-    uglify: {
-      build: {
-          files: {
-              '<%= dev %>/js/main.min.js': ['<%= source %>/js/jquery.js', '<%= source %>/js/*.js'],
-          }
-      }
-   },
-
-   htmlmin: { 
-
-      build: {
-        options: {                                 
-          removeComments: true,
-          collapseWhitespace: true,
-          minifyJS: true,
-          /*minifyCSS: true*/  //critical already minifying
-        },
-       /* files: [{                                  
-          '<%= dev %>/html/index.html':'<%= source %>/index.html'
-        }]*/
-        files: [{
-            expand: true, 
-            cwd: '<%= dev %>/html/', 
-            src: ['*.html'], 
-            dest: '<%= dev %>/', 
-            ext: '.html',
-            extDot: 'first' 
-          }]
-      }                                                                       
   },
 
   imagemin: {                          
@@ -217,76 +228,87 @@ module.exports = function(grunt) {
     }
   },
 
+  browserSync: {
+        dev: {
+            bsFiles: {
+                src: ['<%= dev %>/**', '<%= dev %>/css/*.css']
+            },
+            options: {
+                server: {
+                    baseDir: "<%= dev %>/"
+                },
+                ghostMode: false,
+                open: false,
+                watchTask: true
+            }
+        }
+    },
 
-  
 
-watch: {
-    scripts: {
-      files: ['<%= source %>/js/*.js'],
-      tasks: ['uglify'],
-      options: {
-        spawn: false,
+  watch: {
+      scripts: {
+        files: ['<%= source %>/js/*.js'],
+        tasks: ['uglify'],
+        options: {
+          spawn: false,
+        }
+      },
+
+      css: {
+        files: ['<%= source %>/scss/partials/*.scss'],
+        tasks: ['sass','cssmin','critical','htmlmin','sass','cssmin'],
+        /*tasks: ['sass','cssmin'],*/
+        options: {
+          spawn: false,
+        },
+      },
+
+      indexHtml: {
+        files: ['<%= source %>/index.html'],
+        tasks: ['critical','htmlmin:indexBuild'],
+        options: {
+          spawn: false,
+        },
+      },
+
+      otherHtml: {
+        files: ['<%= source %>/*.html'],
+        tasks: ['htmlmin:otherBuild'],
+        options: {
+          spawn: false,
+        },
       }
-    },
-
-    css: {
-      files: ['<%= source %>/sass/*.scss'],
-      tasks: ['sass','cssmin'],
-      options: {
-        spawn: false,
-      },
-    },
-
-    html: {
-      files: ['<%= source %>/*.html'],
-      tasks: ['critical','htmlmin'],
-      options: {
-        spawn: false,
-      },
-    },
-
-   
-}
+  
+  }
 
 
   });
 
+  // Load the plugin that provides the "uglify" task.
   grunt.loadNpmTasks('grunt-contrib-copy');
-  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-sass');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-htmlmin');
-  grunt.loadNpmTasks('grunt-contrib-imagemin');
-  grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-critical');
-  grunt.loadNpmTasks('grunt-browser-sync');
+  grunt.loadNpmTasks('grunt-contrib-imagemin');
   grunt.loadNpmTasks('grunt-newer');
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-browser-sync');
 
-  //set up npm-critical - for above the fold content
 
+  //update front-end dependencies, after a "bower update" command in console
+  grunt.registerTask('bower-update', ['copy']);
 
+  //img update
+  grunt.registerTask('img-update', ['newer:imagemin']);
 
-  // default for development: type grunt
-  grunt.registerTask('default', ['browserSync', 'newer:imagemin', 'watch']);
+  // Build task(s).
+  grunt.registerTask('build', ['sass', 'cssmin', 'uglify','critical','htmlmin:indexBuild', 'htmlmin:otherBuild', 'newer:imagemin']);
 
-  //critical test
-   grunt.registerTask('critical-test', ['critical']);
-
-  //htmlmin test
-   grunt.registerTask('htmlmin-test', ['htmlmin']);
-
-  //Update images
-  grunt.registerTask('image-update', ['newer:imagemin']);
-
-  //update fonts
-  grunt.registerTask('font-update', ['copy:fonts']);
-
-  //pull in bower dependencies (for use after "bower update")
-  grunt.registerTask('update-bower', ['copy:bower']);
+  // Default task(s).
+  grunt.registerTask('default', ['browserSync','watch']);
 
 
 
-
-
-
-}
+};
