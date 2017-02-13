@@ -20,5 +20,5 @@
     "grunt-contrib-watch": "^1.0.0",
     "grunt-critical": "^0.2.2",
     "grunt-newer": "^1.2.0"
-  },
+  }
 }
