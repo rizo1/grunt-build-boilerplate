@@ -193,25 +193,25 @@ module.exports = function(grunt) {
 
   },
 
-  critical: {
+ critical: {
     test: {
         options: {
             base: './',
             css: [
-                '<%= dev %>/css/main.min.css',
-                
+                '<%= dev %>/css/main.min.css'    
             ],
             width: 1200,
             height: 900,
-            minify: true
+            minify: true,
+           
         },
-          files: [{
+        files: [{
           expand: true,                  
           cwd: '<%= source %>/',                    
           src: 'index.html',   
           dest: '<%= dev %>/html/'                  
         }]
-    }
+    },
   },
 
   imagemin: {                          
